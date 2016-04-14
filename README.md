@@ -85,6 +85,17 @@ Arguments:
 	- `args`: **(optional)** and array of arguments
 	- `cwd`: **(optional)** each process's working directory will be set to this
 
+### spawn.simple(options, callback)
+> Spawn a single instance of a process and calls callback when done
+
+Arguments:
+
+* `options`: an object containing options
+	- `cmd`: the command to execute
+	- `args`: **(optional)** and array of arguments
+	- `cwd`: **(optional)** the process's working directory will be set to this
+* `callback`: function to be called when the process is done
+
 ## The UNIX Pipe Philosophy
 
 If you write spawn programs please consider taking the time to support stdin &

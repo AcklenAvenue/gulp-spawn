@@ -92,7 +92,6 @@ gulpSpawn.stream = function stream(options) {
 		} else { // assume we have a stream.Readable
 
 			// stream away!
-			console.log("stream away!");
 			file.contents = file.contents
 				.pipe(new Duplexer(program.stdin, program.stdout));
 
@@ -194,6 +193,32 @@ gulpSpawn.each = function each(options) {
 	});
 
 	return stream;
+};
+
+gulpSpawn.simple = function simple(options, cb) {
+	"use strict";
+
+	if (!options.cmd) {
+		throw new gUtil.PluginError(PLUGIN_NAME, "command (\"cmd\") argument required");
+	}
+
+	var spawnOpts = {
+		stdio: "inherit"
+	};
+
+	if (options.cwd) {
+		spawnOpts.cwd = options.cwd;
+	}
+
+	var program = cp.spawn(options.cmd, options.args, spawnOpts);
+	program.on("exit", function(code) {
+		if (code !== 0) {
+			throw new gUtil.PluginError(PLUGIN_NAME, "Command exited with code " + code +
+				"\nCommand: " + options.cmd + " " + options.args.map(JSON.stringify).join(" ")
+			);
+		}
+		cb();
+	});
 };
 
 module.exports = gulpSpawn;
