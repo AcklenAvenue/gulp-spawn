@@ -185,7 +185,7 @@ gulpSpawn.each = function each(options) {
 		program.on("exit", function(code) {
 			if (code !== 0) {
 				stream.emit("error", new gUtil.PluginError(PLUGIN_NAME, "Command exited with code " + code +
-					"\nCommand: " + options.cmd + " " + options.args.map(JSON.stringify).join(" ")
+					"\nCommand: " + options.cmd + " " + args.map(JSON.stringify).join(" ")
 				));
 			}
 			cb();
