@@ -41,6 +41,61 @@ gulp.src("./src/images/*.{jpg,png,gif}", { buffer: false })
 	.pipe(gulp.dest("./dist/images/"));
 ```
 
+## API
+
+### spawn(options)
+> Spawns an instance of a process for each file.
+> `spawn` pipes the file contents to each instance
+> and then pipes the process's output
+>
+> `spawn` is an alias for `spawn.stream`
+
+Arguments:
+
+* `options`: an object containing options
+	- `cmd`: the command to execute
+	- `args`: **(optional)** and array of arguments
+	- `filename`: **(optional)** a function that returns the new name for the output files.
+	`function(base, ext)`
+		+ `base`: the filename without an extension
+		+ `ext`: the file's extension
+
+### spawn.stream(options)
+> See [spawn(options)](#spawnoptions)
+
+### spawn.once(options)
+> Spawn a single instance of a process
+
+Arguments:
+
+* `options`: an object containing options
+	- `cmd`: the command to execute
+	- `args`: **(optional)** and array of arguments
+	- `cwd`: **(optional)** the process's working directory will be set to this
+
+### spawn.each(options)
+> Spawn an instance of a process per file.
+> Allows `gulp-util` templates in arguments
+> (e.g. `"<%= file.path %> "`) where `file` is each file
+
+Arguments:
+
+* `options`: an object containing options
+	- `cmd`: the command to execute
+	- `args`: **(optional)** and array of arguments
+	- `cwd`: **(optional)** each process's working directory will be set to this
+
+### spawn.simple(options, callback)
+> Spawn a single instance of a process and calls callback when done
+
+Arguments:
+
+* `options`: an object containing options
+	- `cmd`: the command to execute
+	- `args`: **(optional)** and array of arguments
+	- `cwd`: **(optional)** the process's working directory will be set to this
+* `callback`: function to be called when the process is done
+
 ## The UNIX Pipe Philosophy
 
 If you write spawn programs please consider taking the time to support stdin &
@@ -53,4 +108,4 @@ v0.1.0 - Initial Release
 v0.2.0 - Added `filename` callback option
 v0.2.1 - Fixed support for streams. Effeciency improvements.
 v0.3.0 - Latest stream support and error emits.
-
+v0.4.0 - Added `once`, `each`, `stream` (alias), templating and cwd option
