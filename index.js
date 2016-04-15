@@ -110,8 +110,10 @@ gulpSpawn.once = function once(options) {
 		throw new gUtil.PluginError(PLUGIN_NAME, "command (\"cmd\") argument required");
 	}
 
+	var files = [];
+
 	var stream = through.obj(function _transform(file, unused, cb) {
-		stream.push(file);
+		files.push(file);
 		cb();
 	}, function _flush(cb) {
 		var spawnOpts = {
@@ -129,6 +131,9 @@ gulpSpawn.once = function once(options) {
 					"\nCommand: " + options.cmd + " " + options.args.map(JSON.stringify).join(" ")
 				));
 			}
+			files.forEach(function(f) {
+				stream.push(f);
+			});
 			cb();
 		});
 	});
@@ -167,10 +172,6 @@ gulpSpawn.each = function each(options) {
 	}
 
 	var stream = through.obj(function _transform(file, unused, cb) {
-		stream.push(file);
-		if (file.isNull()) {
-			return cb();
-		}
 
 		var spawnOpts = {
 			stdio: "inherit"
@@ -188,6 +189,7 @@ gulpSpawn.each = function each(options) {
 					"\nCommand: " + options.cmd + " " + args.map(JSON.stringify).join(" ")
 				));
 			}
+			stream.push(file);
 			cb();
 		});
 	});
